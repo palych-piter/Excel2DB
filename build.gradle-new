@@ -1,0 +1,27 @@
+apply plugin: 'java'
+version = '1.0'
+
+//create a single Jar with all dependencies
+task fatJar(type: Jar) {
+
+	manifest {
+        attributes 'Implementation-Title': 'Excel2DB',
+          	   'Implementation-Version': version,
+        	   'Main-Class': 'excel2db'
+        }
+
+    baseName = project.name
+    from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
+    with jar
+
+}
+
+//Get dependencies from Maven central repository
+repositories {
+    mavenCentral()
+}
+
+//Project dependencies
+dependencies {
+	compile 'ch.qos.logback:logback-classic:1.1.2'
+}

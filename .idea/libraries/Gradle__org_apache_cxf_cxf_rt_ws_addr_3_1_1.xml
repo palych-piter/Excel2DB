@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="Gradle: org.apache.cxf:cxf-rt-ws-addr:3.1.1">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.cxf/cxf-rt-ws-addr/3.1.1/83bbc4f34e90892f5e7a7d3867995ddeaec0d7e0/cxf-rt-ws-addr-3.1.1.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.cxf/cxf-rt-ws-addr/3.1.1/299a607c509c1b5e9f6c3631fcc3c39258a04b67/cxf-rt-ws-addr-3.1.1-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>
