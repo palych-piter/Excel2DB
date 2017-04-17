@@ -1,7 +1,6 @@
 package excel2db;
 
 
-
 import com.ge.mdm.tools.common.ApplicationException;
 import com.ge.mdm.tools.common.SheetEntityManager;
 import org.apache.commons.io.FilenameUtils;
@@ -16,6 +15,7 @@ import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
@@ -40,6 +40,22 @@ public class excel2db
     private String cellStringValue;
     private String fileExtension;
     private static Short numberProcessedRecords = Short.valueOf((short)0);
+
+    @Value("${db.server}")
+    String dbServer;
+
+    @Value("${db.user}")
+    String dbUser;
+
+    @Value("${db.password}")
+    String dbPassword;
+
+    @Value("${db.port}")
+    String dbPort;
+
+    @Value("${db.database}")
+    String dbDatabase;
+
 
     Connection connection = null;
 
@@ -118,7 +134,9 @@ public class excel2db
     {
         try
         {
-            connection = DriverManager.getConnection("jdbc:postgresql://localhost:5433/excel2db", "postgres", "postgres");
+            connection = DriverManager.getConnection(
+                    "jdbc:postgresql://" + dbServer + ":" + dbPort + "/" + dbDatabase, dbUser, dbPassword)
+            ;
         }
         catch (SQLException e)
         {
