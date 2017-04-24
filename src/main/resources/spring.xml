@@ -12,6 +12,10 @@
     <context:component-scan base-package="excel2db" />
     <context:property-placeholder location="classpath:excel2db.properties, file:excel2db.properties" ignore-resource-not-found="true"/>
 
-    <bean id = "excel2db" class = "excel2db.excel2db"></bean>
+    <bean id = "excel2db" class = "excel2db.excel2db" scope="singleton">
+        <property name="dbConnection" ref="dbConnection"></property>
+    </bean>
+
+    <bean id = "dbConnection" class = "excel2db.service.impl.DBConnectionPostgresImpl"></bean>
 
 </beans>

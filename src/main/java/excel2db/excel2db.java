@@ -1,8 +1,10 @@
+
 package excel2db;
 
 
 import com.ge.mdm.tools.common.ApplicationException;
 import com.ge.mdm.tools.common.SheetEntityManager;
+import excel2db.service.DBConnection;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
@@ -15,21 +17,20 @@ import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import java.io.File;
 import java.io.IOException;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.Iterator;
 
+
 public class excel2db
 {
-    private static final Logger logger = LoggerFactory.getLogger(excel2db.class);
+    public static final Logger logger = LoggerFactory.getLogger(excel2db.class);
 
     private Workbook workbook;
 
@@ -41,23 +42,9 @@ public class excel2db
     private String fileExtension;
     private static Short numberProcessedRecords = Short.valueOf((short)0);
 
-    @Value("${db.server}")
-    String dbServer;
+    public static Connection connection = null;
 
-    @Value("${db.user}")
-    String dbUser;
-
-    @Value("${db.password}")
-    String dbPassword;
-
-    @Value("${db.port}")
-    String dbPort;
-
-    @Value("${db.database}")
-    String dbDatabase;
-
-
-    Connection connection = null;
+    public DBConnection dbConnection;
 
     public excel2db() {}
 
@@ -76,6 +63,10 @@ public class excel2db
         this.outputSheetFile = outputSheetFile;
     }
 
+    public void setDbConnection(DBConnection dbConnection)
+    {
+        this.dbConnection = dbConnection;
+    }
 
     public static void main(String[] args)
     {
@@ -90,16 +81,24 @@ public class excel2db
 
         try
         {
+
             ApplicationContext context = new ClassPathXmlApplicationContext("spring.xml");
+
             excel2db app = (excel2db)context.getBean("excel2db");
+
+            //DBConnection dbConnection = (DBConnection) context.getBean("dbConnection");
+
 
             app.setInputSheetFile(inputFile);
 
             app.initAndValidate();
-            app.establishPostgresConnection();
+
+            app.dbConnection.establishDBConnection();
+
             app.createTable();
             app.populateTable();
             app.closeConnections();
+
         }
         catch (Exception e) {
             logger.error("An exception occurred while running application", e);
@@ -129,27 +128,6 @@ public class excel2db
         sheetEntityManager = new SheetEntityManager(sheet);
     }
 
-
-    public void establishPostgresConnection()
-    {
-        try
-        {
-            connection = DriverManager.getConnection(
-                    "jdbc:postgresql://" + dbServer + ":" + dbPort + "/" + dbDatabase, dbUser, dbPassword)
-            ;
-        }
-        catch (SQLException e)
-        {
-            logger.error("Connection Failed! Check output console");
-            e.printStackTrace();
-            return;
-        }
-        if (connection != null) {
-            logger.info("Postgres connection is established");
-        } else {
-            logger.error("Failed to make connection!");
-        }
-    }
 
     private static OPCPackage openOPCPackage(File file)
             throws ApplicationException
@@ -188,10 +166,6 @@ public class excel2db
             throw new ApplicationException("Unable to create workbook from NPOIFSFileSystem package", e);
         }
     }
-
-
-
-
 
     public void createTable()
             throws SQLException
