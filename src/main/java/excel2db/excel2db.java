@@ -4,6 +4,7 @@ package excel2db;
 
 import com.ge.mdm.tools.common.ApplicationException;
 import com.ge.mdm.tools.common.SheetEntityManager;
+import excel2db.service.CreateTable;
 import excel2db.service.DBConnection;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
@@ -20,6 +21,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
+
 import java.io.File;
 import java.io.IOException;
 import java.sql.Connection;
@@ -34,7 +36,6 @@ public class excel2db
 
     private Workbook workbook;
 
-    private SheetEntityManager sheetEntityManager;
     private Sheet sheet;
     private File inputSheetFile;
     private File outputSheetFile;
@@ -42,11 +43,15 @@ public class excel2db
     private String fileExtension;
     private static Short numberProcessedRecords = Short.valueOf((short)0);
 
+    //vars are used in interface implementations
     public static Connection connection = null;
 
-    public DBConnection dbConnection;
+    public static SheetEntityManager sheetEntityManager;
 
-    public excel2db() {}
+    // declaring variables to meet to the Spring framework convention
+    public DBConnection dbConnection;
+    public CreateTable createTable;
+
 
     public File getInputSheetFile() { return inputSheetFile; }
 
@@ -63,10 +68,14 @@ public class excel2db
         this.outputSheetFile = outputSheetFile;
     }
 
+    // declaring setters to meet to the Spring framework convention.
+    // Setter injection method (SI))
     public void setDbConnection(DBConnection dbConnection)
     {
         this.dbConnection = dbConnection;
     }
+    public void setCreateTable(CreateTable createTable) { this.createTable = createTable; }
+
 
     public static void main(String[] args)
     {
@@ -83,20 +92,18 @@ public class excel2db
         {
 
             ApplicationContext context = new ClassPathXmlApplicationContext("spring.xml");
-
             excel2db app = (excel2db)context.getBean("excel2db");
 
-            //DBConnection dbConnection = (DBConnection) context.getBean("dbConnection");
-
-
             app.setInputSheetFile(inputFile);
-
             app.initAndValidate();
 
+            //this way we call the method for the dbConnection object
+            //that is already initialized by the Spring Framework
             app.dbConnection.establishDBConnection();
 
-            app.createTable();
+            app.createTable.createTable();
             app.populateTable();
+
             app.closeConnections();
 
         }
@@ -165,35 +172,6 @@ public class excel2db
         } catch (IOException e) {
             throw new ApplicationException("Unable to create workbook from NPOIFSFileSystem package", e);
         }
-    }
-
-    public void createTable()
-            throws SQLException
-    {
-        String sqlTableDropStatement = "DROP TABLE IF EXISTS excel2db;";
-
-
-
-        StringBuilder sqlTableCreateStatement = new StringBuilder();
-
-        sqlTableCreateStatement.append("CREATE TABLE excel2db(");
-
-
-        for (String headerColumnName : sheetEntityManager.header.keySet()) {
-            sqlTableCreateStatement.append("\"" + headerColumnName + "\"" + " text, ");
-        }
-
-
-        sqlTableCreateStatement.setLength(sqlTableCreateStatement.length() - 2);
-
-        sqlTableCreateStatement.append(") WITH (OIDS=FALSE);");
-
-
-        PreparedStatement pstmtDrop = connection.prepareStatement(sqlTableDropStatement);
-        pstmtDrop.execute();
-
-        PreparedStatement pstmtCreate = connection.prepareStatement(sqlTableCreateStatement.toString());
-        pstmtCreate.execute();
     }
 
 
