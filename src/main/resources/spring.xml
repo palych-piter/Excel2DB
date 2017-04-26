@@ -15,15 +15,20 @@
 
     <bean id = "excel2db" class = "excel2db.excel2db" scope="singleton">
         <property name="dbConnection" ref="dbConnection"></property>
-        <property name="createTable" ref="createTable"></property>
-        <!--<constructor-arg type="excel2db.service.impl.CreateTablePostgresImpl">-->
-            <!--<ref bean="createTable"/>-->
-        <!--</constructor-arg>-->
+        <!--<property name="createTable" ref="createTable"></property>-->
+        <constructor-arg>
+            <ref bean="createTable"/>
+        </constructor-arg>
+        <constructor-arg>
+            <ref bean="populateTable"/>
+        </constructor-arg>
     </bean>
 
     <bean id = "dbConnection" class = "excel2db.service.impl.DBConnectionPostgresImpl"></bean>
 
     <bean id = "createTable" class = "excel2db.service.impl.CreateTablePostgresImpl"></bean>
+
+    <bean id = "populateTable" class = "excel2db.service.impl.PopulateTablePostgresImpl"></bean>
 
 
 </beans>
