@@ -26,9 +26,9 @@ public class DBConnectionOracleImpl implements DBConnection {
     public static final Logger logger = LoggerFactory.getLogger(DBConnectionPostgresImpl.class);
 
     public void establishDBConnection() {
-         {
-             logger.info("Oracle connection is not implemented yet");
-         }
+        {
+            logger.info("Oracle connection is not implemented yet");
+        }
     }
 
 }

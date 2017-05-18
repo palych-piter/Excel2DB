@@ -1,13 +1,13 @@
 package excel2db.service.impl;
 
+import java.sql.DriverManager;
+import java.sql.SQLException;
+
 import excel2db.excel2db;
 import excel2db.service.DBConnection;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
-
-import java.sql.DriverManager;
-import java.sql.SQLException;
 
 public class DBConnectionPostgresImpl implements DBConnection {
 
@@ -27,13 +27,14 @@ public class DBConnectionPostgresImpl implements DBConnection {
     @Value("${db.database}")
     String dbDatabase;
 
+
     public static final Logger logger = LoggerFactory.getLogger(DBConnectionPostgresImpl.class);
 
     public void establishDBConnection() {
         try {
             excel2db.connection = DriverManager.getConnection(
-                        "jdbc:postgresql://" + dbServer + ":" + dbPort + "/" + dbDatabase, dbUser, dbPassword)
-                ;
+                    "jdbc:postgresql://" + dbServer + ":" + dbPort + "/" + dbDatabase, dbUser, dbPassword)
+            ;
 
         } catch (SQLException e) {
             logger.error("Connection Failed! Check output console");
@@ -46,5 +47,4 @@ public class DBConnectionPostgresImpl implements DBConnection {
             logger.error("Failed to make connection!");
         }
     }
-
 }

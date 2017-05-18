@@ -4,6 +4,6 @@ import java.sql.SQLException;
 
 public interface PopulateTable {
 
-    public void populateTable () throws SQLException;
+    public Integer populateTable(String tableName) throws SQLException;
 
 }
