@@ -25,7 +25,6 @@ import java.util.*;
  * Read Excel files in JPA way, considering sheet as a simple database table with columns and rows.
  * First row is assumed to be header containing column names, which could be mapped to JPA @Entity.
  *
- * @author Stanislav Mamontov
  */
 public class SheetEntityManager implements EntityManager {
 

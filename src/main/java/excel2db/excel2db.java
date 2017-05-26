@@ -4,13 +4,14 @@ import java.io.File;
 import java.sql.Connection;
 import java.sql.SQLException;
 
-import com.ge.mdm.tools.common.ApplicationException;
+import excel2db.ApplicationException;
 import excel2db.service.CreateTable;
 import excel2db.service.DBConnection;
 import excel2db.service.GenerateFileList;
 import excel2db.service.InitConstants;
 import excel2db.service.InitInputFiles;
 import excel2db.service.PopulateTable;
+import excel2db.Excel2dbTask;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
@@ -31,10 +32,8 @@ public class excel2db
         this.populateTable = populateTable;
     }
 
-
     //vars are used in interface implementations
     public static Connection connection = null;
-    public static Short numberProcessedRecords = Short.valueOf((short) 0);
 
 
     // declaring variables to meet to the Spring framework convention
@@ -68,6 +67,11 @@ public class excel2db
 
         try {
 
+
+            //for profiling, to launch the VisualVM first,
+            // then start the application by pressing the Enter
+            //System.in.read();
+
             ApplicationContext context = new ClassPathXmlApplicationContext("spring.xml");
             excel2db app = (excel2db) context.getBean("excel2db");
 
@@ -76,7 +80,8 @@ public class excel2db
             //this way we call methods for objects that is already initialized by the Spring
             app.dbConnection.establishDBConnection();
 
-            // iterate through file name values inn properties file
+            // iterate through file name values in properties file,
+            // for each file start a new thread
             for (String fileNameValue : app.generateFileList.generateFileList()) {
                 File fileName = new File(fileNameValue);
                 taskExecutor.execute(new Excel2dbTask(app, fileName));
@@ -97,17 +102,15 @@ public class excel2db
 
     }
 
-
     public void closeConnections() throws ApplicationException, SQLException {
-        logger.info("Closing connections");
-        connection.close();
 
-        logger.info("Closing task executor ");
+        connection.close();
+        logger.info("Connections are closed");
+
         taskExecutor.shutdown();
         logger.info("Task executor is stopped");
 
-        logger.info("The process is completed");
-        logger.info("Number of processed records: " + numberProcessedRecords.toString());
+        logger.info("The process is completed. Number of processed records: " + Excel2dbTask.numberOfProcessedRows.toString());
 
     }
 

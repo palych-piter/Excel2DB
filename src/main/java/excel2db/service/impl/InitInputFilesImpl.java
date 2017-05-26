@@ -2,14 +2,19 @@ package excel2db.service.impl;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
-import com.ge.mdm.tools.common.ApplicationException;
+import excel2db.ApplicationException;
 import excel2db.service.InitInputFiles;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.openxml4j.opc.OPCPackage;
 import org.apache.poi.poifs.filesystem.NPOIFSFileSystem;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -99,5 +104,38 @@ public class InitInputFilesImpl implements InitInputFiles {
         }
     }
 
+    public static Map<String, Integer> readSheetHeader(Sheet sheet) {
+        // first row is always considered as header
+        Row firstRow = sheet.getRow(sheet.getFirstRowNum());
+        if(firstRow == null) {
+            throw new IllegalArgumentException("Sheet is empty");
+        }
+
+        Map<String, Integer> header = new LinkedHashMap<String, Integer>();
+
+        Iterator<Cell> it = firstRow.cellIterator();
+
+        while(it.hasNext()) {
+            Cell cell = it.next();
+
+            if(cell.getCellType() == Cell.CELL_TYPE_STRING) {
+                String name = cell.getStringCellValue();
+                if(! name.equals("")) {
+                    name = name.toUpperCase();
+                    if(! header.containsKey(name)) {
+                        header.put(name, cell.getColumnIndex());
+                    } else {
+                        logger.warn("Ignoring duplicate header name {} at ({}, {})",
+                                name, cell.getRowIndex(), cell.getColumnIndex());
+                    }
+                }
+            } else {
+                logger.warn("Ignoring header cell with non-string type {} at ({}, {})",
+                        cell.getCellType(), cell.getRowIndex(), cell.getColumnIndex());
+            }
+
+        }
+        return header;
+    }
 
 }

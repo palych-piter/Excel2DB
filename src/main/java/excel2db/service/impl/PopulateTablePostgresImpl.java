@@ -8,6 +8,7 @@ import excel2db.excel2db;
 import excel2db.service.PopulateTable;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -18,8 +19,7 @@ public class PopulateTablePostgresImpl implements PopulateTable {
     private String cellStringValue;
     private Integer numOfProcessedRows = 0;
 
-
-    public Integer populateTable(String tableName)
+    public Integer populateTable(Sheet sheet, String tableName)
             throws SQLException {
 
         Iterator<Row> rowIterator = InitInputFilesImpl.sheet.rowIterator();
@@ -34,10 +34,9 @@ public class PopulateTablePostgresImpl implements PopulateTable {
         while (rowIterator.hasNext()) {
 
             Row row = (Row) rowIterator.next();
-            numOfProcessedRows = numOfProcessedRows++;
 
-            Short localShort1 = excel2db.numberProcessedRecords;
-            Short localShort2 = excel2db.numberProcessedRecords = Short.valueOf((short) (excel2db.numberProcessedRecords.shortValue() + 1));
+            //count rows
+            numOfProcessedRows++;
 
             StringBuilder sqlTableInsertStatement = new StringBuilder();
             sqlTableInsertStatement.append("INSERT INTO \"" +
@@ -45,10 +44,8 @@ public class PopulateTablePostgresImpl implements PopulateTable {
 
             sqlTableInsertStatement.append("(");
 
-
             short minColIdx = row.getFirstCellNum();
             short maxColIdx = row.getLastCellNum();
-
 
             for (short colIdx = minColIdx; colIdx < maxColIdx; colIdx = (short) (colIdx + 1)) {
                 cellStringValue = "";
@@ -72,6 +69,5 @@ public class PopulateTablePostgresImpl implements PopulateTable {
         return numOfProcessedRows;
 
     }
-
 
 }

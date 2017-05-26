@@ -10,9 +10,6 @@ import org.slf4j.LoggerFactory;
 
 import java.util.*;
 
-/**
- * @author Stanislav Mamontov
- */
 public class AuthOutInterceptor extends AbstractPhaseInterceptor<Message> {
 
     private static final Logger logger = LoggerFactory.getLogger(AuthOutInterceptor.class);

@@ -27,7 +27,6 @@ public class DBConnectionPostgresImpl implements DBConnection {
     @Value("${db.database}")
     String dbDatabase;
 
-
     public static final Logger logger = LoggerFactory.getLogger(DBConnectionPostgresImpl.class);
 
     public void establishDBConnection() {

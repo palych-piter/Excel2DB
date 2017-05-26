@@ -1,4 +1,8 @@
-package com.ge.mdm.tools.common;
+package excel2db;
+
+/**
+ * Created by Andrey on 5/26/2017.
+ */
 
 public class ApplicationException extends Exception {
     static final long serialVersionUID = 1L;

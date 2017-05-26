@@ -2,21 +2,28 @@ package excel2db.service.impl;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
-import com.ge.mdm.tools.common.SheetEntityManager;
+//import com.ge.mdm.tools.common.SheetEntityManager;
 import excel2db.excel2db;
 import excel2db.service.CreateTable;
+import org.apache.poi.ss.usermodel.Sheet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class CreateTablePostgresImpl implements CreateTable {
 
     public static final Logger logger = LoggerFactory.getLogger(CreateTablePostgresImpl.class);
-    private SheetEntityManager sheetEntityManager;
+    //private SheetEntityManager sheetEntityManager;
 
-    public void createTable(String tableName) throws SQLException {
+    public void createTable(Sheet sheet, String tableName) throws SQLException {
 
-        sheetEntityManager = new SheetEntityManager(InitInputFilesImpl.sheet);
+        //sheetEntityManager = new SheetEntityManager(sheet);
+        //initializing var for a header
+        Map<String, Integer> header = new LinkedHashMap<>();
+        header = InitInputFilesImpl.readSheetHeader(sheet);
+
 
         //dropping statement
         String sqlTableDropStatement = "DROP TABLE IF EXISTS \"" +
@@ -26,7 +33,7 @@ public class CreateTablePostgresImpl implements CreateTable {
         StringBuilder sqlTableCreateStatement = new StringBuilder();
         sqlTableCreateStatement.append("CREATE TABLE \"" +
                 tableName + "\"(");
-        for (String headerColumnName : sheetEntityManager.header.keySet()) {
+        for (String headerColumnName : header.keySet()) {
             sqlTableCreateStatement.append("\"" + headerColumnName + "\"" + " text, ");
         }
 

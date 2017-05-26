@@ -5,9 +5,7 @@ import java.util.concurrent.*;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
-/**
- * @author Stanislav Mamontov
- */
+
 public class TaskExecutor<T extends Runnable> {
 
     private int poolSize;
