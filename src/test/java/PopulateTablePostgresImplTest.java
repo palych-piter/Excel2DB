@@ -34,7 +34,7 @@ public class PopulateTablePostgresImplTest  {
         excel2db app = (excel2db) context.getBean("excel2db");
 
         //executing the test
-        File fileName = new File(app.initConstants.workingDir + "/unitTest.xls");
+        File fileName = new File(app.initConstants.workingDir + "/test.xls");
         sheet = app.initInputFiles.initInputFiles(fileName);
         app.dbConnection.establishDBConnection();
         app.createTable.createTable(sheet, "testTable");

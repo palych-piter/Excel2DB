@@ -20,9 +20,7 @@ import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
 
 public class excel2db
-
 {
-
     public static final Logger logger = LoggerFactory.getLogger(excel2db.class);
 
     // declaring the constructor to meet to the Spring framework convention
