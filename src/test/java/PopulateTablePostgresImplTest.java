@@ -34,14 +34,14 @@ public class PopulateTablePostgresImplTest  {
         excel2db app = (excel2db) context.getBean("excel2db");
 
         //executing the test
-        File fileName = new File(app.initConstants.workingDir + "/test.xls");
+        File fileName = new File(app.initConstants.workingDir + "/test.xlsx");
         sheet = app.initInputFiles.initInputFiles(fileName);
         app.dbConnection.establishDBConnection();
         app.createTable.createTable(sheet, "testTable");
 
         //here we should initialize the sheet object
         Integer numOfProcessedRows = app.populateTable.populateTable(sheet, "testTable");
-        assertEquals(Integer.valueOf(9), numOfProcessedRows);
+        assertEquals(Integer.valueOf(2), numOfProcessedRows);
 
     }
 }

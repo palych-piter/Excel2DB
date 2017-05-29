@@ -3,6 +3,8 @@ package excel2db;
 import java.io.File;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.HashSet;
+import java.util.concurrent.TimeUnit;
 
 import excel2db.ApplicationException;
 import excel2db.service.CreateTable;
@@ -65,7 +67,6 @@ public class excel2db
 
         try {
 
-
             //for profiling, to launch the VisualVM first,
             // then start the application by pressing the Enter
             //System.in.read();
@@ -75,19 +76,36 @@ public class excel2db
 
             taskExecutor = (ThreadPoolTaskExecutor) context.getBean("taskExecutor");
 
+            //check if the file list is not empty
+            HashSet<String> fileList = app.generateFileList.generateFileList();
+            if (fileList == null){
+                throw new Exception("File list is empty in property file");
+                //logger.error("Empty file list");
+            }
+
             //this way we call methods for objects that is already initialized by the Spring
             app.dbConnection.establishDBConnection();
 
             // iterate through file name values in properties file,
             // for each file start a new thread
-            for (String fileNameValue : app.generateFileList.generateFileList()) {
+            for (String fileNameValue : fileList) {
+
                 File fileName = new File(fileNameValue);
-                taskExecutor.execute(new Excel2dbTask(app, fileName));
+                //check if the file really exists
+                if (fileName.exists() == false) {
+                    logger.error("The file " + fileNameValue + " doesn't exist");
+                } else {
+                    taskExecutor.execute(new Excel2dbTask(app, fileName));
+                }
+
             }
 
+            //TODO : This is just as a workaround to wait till the thread has been really started
+            //TODO : Need to use the ScheduledThreadPoolExecutor to customize delays on starting threads
+            TimeUnit.SECONDS.sleep(1);
             // Wait until all threads are finished
             logger.info("Waiting until active threads exist");
-            while (excel2db.taskExecutor.getActiveCount() != 0) {
+            while (taskExecutor.getActiveCount() != 0) {
             }
             logger.info("All threads are inactive");
 

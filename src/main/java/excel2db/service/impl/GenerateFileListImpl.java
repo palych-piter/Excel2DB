@@ -15,11 +15,12 @@ public class GenerateFileListImpl implements GenerateFileList {
     @Override
     public HashSet<String> generateFileList() {
 
-        String[] fileNameArray = inputFilesList.split(",");
-
-        // hash set to eliminate duplicates
-        HashSet<String> fileList = new HashSet<>(Arrays.asList(fileNameArray));
-
+        HashSet<String> fileList = null;
+        if (!inputFilesList.isEmpty()) {
+            String[] fileNameArray = inputFilesList.split(",");
+            // hash set to eliminate duplicates
+            fileList = new HashSet<>(Arrays.asList(fileNameArray));
+        }
         return fileList;
 
     }
