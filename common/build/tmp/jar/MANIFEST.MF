@@ -1,4 +1,0 @@
-Manifest-Version: 1.0
-Implementation-Title: MDM Tools Commons
-Implementation-Version: 1.0
-
