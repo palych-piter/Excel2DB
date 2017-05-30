@@ -31,11 +31,11 @@
 
     </bean>
 
-
-
-    <bean id="dbConnection" class="excel2db.service.impl.DBConnectionPostgresImpl"></bean>
+    <!-- This way it is possible to get values from a properties file nd use the values -->
+    <!-- as paramaters in the spring configuration -->
     <!--<bean id="dbConnection" class="${dbConnectionImplenentation}"></bean>-->
 
+    <bean id="dbConnection" class="excel2db.service.impl.DBConnectionPostgresImpl"></bean>
 
     <bean id="createTable" class="excel2db.service.impl.CreateTablePostgresImpl"></bean>
 
@@ -57,6 +57,5 @@
     </bean>
 
     <bean id="applicationContextUtils" class="excel2db.ApplicationContextUtils"></bean>
-
 
 </beans>

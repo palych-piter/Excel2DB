@@ -39,18 +39,22 @@ repositories {
 
 
 dependencies {
-
-   compile project (":common")
+   //eliminate the :common project now since all method are in the excel2db class now
+   //compile project (":common")
    compile 'ch.qos.logback:logback-classic:1.2.2'
    compile 'javax.persistence:persistence-api:1.0.2'
    compile ('org.springframework:spring-context:4.3.7.RELEASE'){
-       //exclude module: 'commons-logging' // force Spring to use jcl-over-slf4j bridge
+       exclude module: 'commons-logging' // force Spring to use jcl-over-slf4j bridge
    }
+   compile 'org.springframework.boot:spring-boot-starter-test:1.5.3.RELEASE'
    compile 'org.apache.poi:poi:3.15'
    compile 'org.apache.poi:poi-ooxml:3.15' 
    compile 'org.postgresql:postgresql:42.0.0.jre7'
    compile 'org.apache.directory.studio:org.apache.commons.io:2.4'
-
+   compile('junit:junit:4.12'){
+        exclude group: 'org.hamcrest'
+    }
+   compile 'org.hamcrest:hamcrest-library:1.3'
 }
 
 
@@ -68,6 +72,18 @@ jar {
    from {
           configurations.compile.collect { it.isDirectory() ? it : zipTree(it) }
    }
+
+
+//filtering out test classes, only test suites should be run
+    test {
+        testLogging.showStandardStreams = true
+        testLogging.exceptionFormat = 'full'
+
+        //exclude certain classes to avoid double running
+        // - suites + test classes
+        exclude '**/InitInputFilesImplTest.class'
+        exclude '**/PopulateTablePostgresImplTest.class'
+    }
 
 }
 
