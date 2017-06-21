@@ -17,7 +17,7 @@ import static org.junit.Assert.assertEquals;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = "/spring.xml")
 @Category(JUnitPopulateTableCategory.class)
-public class PopulateTablePostgresImplTest  {
+public class PopulateTableImplTest {
 
     private Sheet sheet;
 
@@ -25,16 +25,12 @@ public class PopulateTablePostgresImplTest  {
     public void testPopulateTable() throws Exception {
 
         //initializing application context
-//        AbstractApplicationContext context = new ClassPathXmlApplicationContext("spring.xml");
-//        ApplicationContextUtils appcontext= (ApplicationContextUtils) context.getBean("applicationContextUtils");
-//        ApplicationContext appCon =appcontext.getApplicationContext();
-//        excel2db app = (excel2db) appCon.getBean("excel2db");
-
         ApplicationContext context = new ClassPathXmlApplicationContext("spring.xml");
         excel2db app = (excel2db) context.getBean("excel2db");
 
         //executing the test
         File fileName = new File(app.initConstants.workingDir + "/test.xlsx");
+
         sheet = app.initInputFiles.initInputFiles(fileName);
         app.dbConnection.establishDBConnection();
         app.createTable.createTable(sheet, "testTable");

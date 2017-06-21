@@ -27,12 +27,6 @@ public class InitInputFilesImplTest {
     public void testInitInputFilesImpl() throws Exception {
 
         //initializing application context
-        //need to check if we really need to get the spring.xml if the config is in "locations"
-//        AbstractApplicationContext context = new ClassPathXmlApplicationContext("spring.xml");
-//        ApplicationContextUtils appcontext= (ApplicationContextUtils) context.getBean("applicationContextUtils");
-//        ApplicationContext appCon = appcontext.getApplicationContext();
-//        excel2db app = (excel2db) appCon.getBean("excel2db");
-
         ApplicationContext context = new ClassPathXmlApplicationContext("spring.xml");
         excel2db app = (excel2db) context.getBean("excel2db");
 

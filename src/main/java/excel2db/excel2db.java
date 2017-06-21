@@ -62,7 +62,6 @@ public class excel2db
     }
 
 
-
     public static void main(String[] args) {
 
         try {
@@ -80,7 +79,7 @@ public class excel2db
             HashSet<String> fileList = app.generateFileList.generateFileList();
             if (fileList == null){
                 throw new Exception("File list is empty in property file");
-                //logger.error("Empty file list");
+
             }
 
             //this way we call methods for objects that is already initialized by the Spring
