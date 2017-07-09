@@ -11,6 +11,7 @@
 # Gradle files #
 ################
 .gradle
+/gradle/wrapper/
 
 
 # Files in the build folder #
