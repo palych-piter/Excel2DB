@@ -1,3 +1,23 @@
+
+# Idea files #
+################
+/.idea/
+
+
+# bat files #
+################
+/bin/
+    
+# Gradle files #
+################
+.gradle
+
+
+# Files in the build folder #
+#############################
+/build/
+
+
 # Compiled source #
 ###################
 *.com

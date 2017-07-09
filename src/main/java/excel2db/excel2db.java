@@ -6,14 +6,12 @@ import java.sql.SQLException;
 import java.util.HashSet;
 import java.util.concurrent.TimeUnit;
 
-import excel2db.ApplicationException;
 import excel2db.service.CreateTable;
 import excel2db.service.DBConnection;
 import excel2db.service.GenerateFileList;
 import excel2db.service.InitConstants;
 import excel2db.service.InitInputFiles;
 import excel2db.service.PopulateTable;
-import excel2db.Excel2dbTask;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
@@ -85,31 +83,32 @@ public class excel2db
             //this way we call methods for objects that is already initialized by the Spring
             app.dbConnection.establishDBConnection();
 
-            // iterate through file name values in properties file,
-            // for each file start a new thread
-            for (String fileNameValue : fileList) {
+            // in case the connection established
+            // iterate through file name values in properties file, for each file start a new thread
+            if (connection != null) {
+                for (String fileNameValue : fileList) {
 
-                File fileName = new File(fileNameValue);
-                //check if the file really exists
-                if (fileName.exists() == false) {
-                    logger.error("The file " + fileNameValue + " doesn't exist");
-                } else {
-                    taskExecutor.execute(new Excel2dbTask(app, fileName));
+                    File fileName = new File(fileNameValue);
+                    //check if the file really exists
+                    if (fileName.exists() == false) {
+                        logger.error("The file " + fileNameValue + " doesn't exist");
+                    } else {
+                        taskExecutor.execute(new Excel2dbTask(app, fileName));
+                    }
                 }
 
+
+                //TODO : This is just as a workaround to wait till the thread has been really started
+                //TODO : Need to use the ScheduledThreadPoolExecutor to customize delays on starting threads
+                TimeUnit.SECONDS.sleep(1);
+                // Wait until all threads are finished
+                logger.info("Waiting until active threads exist");
+                while (taskExecutor.getActiveCount() != 0) {
+                }
+                logger.info("All threads are inactive");
+
+                app.closeConnections();
             }
-
-            //TODO : This is just as a workaround to wait till the thread has been really started
-            //TODO : Need to use the ScheduledThreadPoolExecutor to customize delays on starting threads
-            TimeUnit.SECONDS.sleep(1);
-            // Wait until all threads are finished
-            logger.info("Waiting until active threads exist");
-            while (taskExecutor.getActiveCount() != 0) {
-            }
-            logger.info("All threads are inactive");
-
-            app.closeConnections();
-
         } catch (Exception e) {
             logger.error("An exception occurred while running application", e);
             System.exit(1);

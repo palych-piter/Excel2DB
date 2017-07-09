@@ -31,7 +31,7 @@ public class CreateTableOracleImpl implements CreateTable {
         sqlTableCreateStatement.append("CREATE TABLE \"" +
                 tableName + "\"(");
         for (String headerColumnName : header.keySet()) {
-            sqlTableCreateStatement.append("\"" + headerColumnName + "\"" + " VARCHAR2(20), ");
+            sqlTableCreateStatement.append("\"" + headerColumnName + "\"" + " VARCHAR2(100), ");
         }
 
         sqlTableCreateStatement.setLength(sqlTableCreateStatement.length() - 2);

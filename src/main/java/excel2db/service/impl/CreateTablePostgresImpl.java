@@ -19,7 +19,6 @@ public class CreateTablePostgresImpl implements CreateTable {
 
     public void createTable(Sheet sheet, String tableName) throws SQLException {
 
-        //sheetEntityManager = new SheetEntityManager(sheet);
         //initializing var for a header
         Map<String, Integer> header = new LinkedHashMap<>();
         header = InitInputFilesImpl.readSheetHeader(sheet);

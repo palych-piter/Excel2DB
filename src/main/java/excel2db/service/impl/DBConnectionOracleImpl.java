@@ -38,20 +38,11 @@ public class DBConnectionOracleImpl implements DBConnection {
 
             try {
                 excel2db.connection = DriverManager.getConnection(
-                        "jdbc:oracle:thin:@//" + dbServer + ":" + dbPort + "/" + dbSid, dbUser, dbPassword)
-                ;
-
+                        "jdbc:oracle:thin:@//" + dbServer + ":" + dbPort + "/" + dbSid, dbUser, dbPassword);
+                logger.info("Oracle connection is established");
             } catch (SQLException e) {
                 logger.error("Oracle Connection Failed! Check output console");
-                e.printStackTrace();
-                return;
             }
-            if (excel2db.connection != null) {
-                logger.info("Oracle connection is established");
-            } else {
-                logger.error("Failed to make the Oracle connection!");
-            }
-
         }
 
     }

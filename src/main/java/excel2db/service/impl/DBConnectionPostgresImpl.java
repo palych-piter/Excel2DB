@@ -1,5 +1,6 @@
 package excel2db.service.impl;
 
+import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
@@ -29,21 +30,18 @@ public class DBConnectionPostgresImpl implements DBConnection {
 
     public static final Logger logger = LoggerFactory.getLogger(DBConnectionPostgresImpl.class);
 
-    public void establishDBConnection() {
+
+    public void establishDBConnection() throws SQLException {
+
+        //TODO : try to use the try-catch-resource construction, connection object should be closed as soon as the program stops working with this object
         try {
             excel2db.connection = DriverManager.getConnection(
-                    "jdbc:postgresql://" + dbServer + ":" + dbPort + "/" + dbDatabase, dbUser, dbPassword)
-            ;
-
-        } catch (SQLException e) {
-            logger.error("Connection Failed! Check output console");
-            e.printStackTrace();
-            return;
-        }
-        if (excel2db.connection != null) {
+                    "jdbc:postgresql://" + dbServer + ":" + dbPort + "/" + dbDatabase, dbUser, dbPassword);
             logger.info("Postgres connection is established");
-        } else {
-            logger.error("Failed to make connection!");
+        } catch (SQLException e) {
+            logger.error("Postgres Connection Failed! Check output console.");
         }
+
     }
+
 }

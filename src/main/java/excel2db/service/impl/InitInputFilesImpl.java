@@ -42,6 +42,9 @@ public class InitInputFilesImpl implements InitInputFiles {
 
     public static final Logger logger = LoggerFactory.getLogger(InitInputFilesImpl.class);
 
+    //fabric method for
+    //fabric method pattern, we don't know which object should be created
+    //in advance and define the object type based on an extension
     @Override
     public Sheet initInputFiles(File inputFile)
             throws ApplicationException, IOException {
