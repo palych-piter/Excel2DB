@@ -1,12 +1,12 @@
 
 How to clone and build the project from the GitHub 
 
-1. Create a folder we you want to handle the project and clone the 
+1. Create a folder you want to handle the project and clone the 
 project from the GitHub by running 
 "git clone https://github.com/palych-piter/Excel2DB.git". 
 The Excel2Db subfolder should be created.
 
-2. Run the "gradlew shadowJar" gradle command. You should have the 
+2. Run the "gradle shadowJar" gradle command. You should have the 
 Gradle pre-installed.
 
 3. All is set. The "build/libs/" subfolder should have the newest jar file
