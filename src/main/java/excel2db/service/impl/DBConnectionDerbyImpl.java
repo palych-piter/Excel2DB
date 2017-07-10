@@ -31,6 +31,7 @@ public class DBConnectionDerbyImpl implements DBConnection {
 
             } catch (SQLException e) {
                 logger.error("Derby Connection Failed! Check output console");
+
             }
         }
     }

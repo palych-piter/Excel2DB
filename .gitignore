@@ -21,6 +21,10 @@ gradlew.bat
 /build/
 
 
+# Avoid ignoring lib jar files (.jar files are usually ignored)
+!/libs/*.jar
+
+
 # Compiled source #
 ###################
 *.com
@@ -48,6 +52,7 @@ gradlew.bat
 *.log
 *.sql
 *.sqlite
+
 
 # OS generated files #
 ######################
