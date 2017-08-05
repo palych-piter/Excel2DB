@@ -1,4 +1,4 @@
-// verify if the application reads the Excel sheet by checking sheet name
+// verify if the application reads the Excel sheet by checking a sheet name
 
 import java.io.File;
 

@@ -35,7 +35,6 @@ public class PopulateTableImplTest {
         app.dbConnection.establishDBConnection();
         app.createTable.createTable(sheet, "testTable");
 
-        //here we should initialize the sheet object
         Integer numOfProcessedRows = app.populateTable.populateTable(sheet, "testTable");
         assertEquals(Integer.valueOf(2), numOfProcessedRows);
 

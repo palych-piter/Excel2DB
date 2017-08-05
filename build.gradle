@@ -92,10 +92,11 @@ jar {
         testLogging.showStandardStreams = true
         testLogging.exceptionFormat = 'full'
 
-        //exclude certain classes to avoid double running
-        // - suites + test classes
+        //exclude certain classes to avoid double running - suites + test classes
         exclude '**/InitInputFilesImplTest.class'
         exclude '**/PopulateTablePostgresImplTest.class'
+        exclude '**/PopulateCellsImplTest.class'
+
     }
 
     //the copyFiles task executes right after the shadowJar and copy

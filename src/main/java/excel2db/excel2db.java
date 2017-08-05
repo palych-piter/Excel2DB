@@ -9,6 +9,7 @@ import java.util.concurrent.TimeUnit;
 import excel2db.service.CreateTable;
 import excel2db.service.DBConnection;
 import excel2db.service.GenerateFileList;
+import excel2db.service.GetFirstRow;
 import excel2db.service.InitConstants;
 import excel2db.service.InitInputFiles;
 import excel2db.service.PopulateTable;
@@ -41,6 +42,9 @@ public class excel2db
     public CreateTable createTable;
     public PopulateTable populateTable;
     public InitConstants initConstants;
+    public GetFirstRow getFirstRow;
+
+
 
     public static ThreadPoolTaskExecutor taskExecutor;
 
@@ -57,6 +61,9 @@ public class excel2db
     }
     public void setInitConstants(InitConstants initConstants) {
         this.initConstants = initConstants;
+    }
+    public void setGetFirstRow(GetFirstRow getFirstRow) {
+        this.getFirstRow = getFirstRow;
     }
 
 

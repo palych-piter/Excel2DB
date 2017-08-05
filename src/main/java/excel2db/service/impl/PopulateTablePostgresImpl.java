@@ -64,7 +64,10 @@ public class PopulateTablePostgresImpl implements PopulateTable {
 
             pstmtInsertRow.execute();
 
+
         }
+
+        logger.info("The table {} is populated", tableName);
 
         return numOfProcessedRows;
 

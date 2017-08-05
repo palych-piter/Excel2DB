@@ -4,7 +4,7 @@ import org.junit.runners.Suite;
 
 @RunWith(Categories.class)
 @Categories.IncludeCategory(JUnitPopulateTableCategory.class)
-@Suite.SuiteClasses({PopulateTableImplTest.class})
+@Suite.SuiteClasses(PopulateTableImplTest.class)
 public class JUnitSuitePopulateTable {
 
 }

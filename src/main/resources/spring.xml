@@ -16,11 +16,11 @@
 
     <bean id="excel2db" class="excel2db.excel2db" scope="singleton">
 
-        <!--<property name="dbConnection" ref="dbConnection"></property>-->
         <property name="dbConnection" ref="dbConnection"></property>
         <property name="initInputFiles" ref="initInputFiles"></property>
         <property name="generateFileList" ref="generateFileList"></property>
         <property name="initConstants" ref="initConstants"></property>
+        <property name="getFirstRow" ref="getFirstRow"></property>
 
         <constructor-arg>
             <ref bean="createTable"/>
@@ -28,6 +28,7 @@
         <constructor-arg>
             <ref bean="populateTable"/>
         </constructor-arg>
+
 
     </bean>
 
@@ -39,6 +40,10 @@
 
     <bean id="createTable" class="${createTableImplenentation}"></bean>
     <!--<bean id="createTable" class="excel2db.service.impl.CreateTablePostgresImpl"></bean>-->
+
+    <!--<bean id="getFirstRow" class="${getFirstRowImplementation}"></bean>-->
+    <bean id="getFirstRow" class="excel2db.service.impl.GetFirstRowDerbyImpl"></bean>
+
 
     <bean id="populateTable" class="excel2db.service.impl.PopulateTablePostgresImpl"></bean>
 
