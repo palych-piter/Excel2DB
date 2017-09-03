@@ -4,8 +4,6 @@ import java.io.File;
 import java.io.IOException;
 import java.sql.SQLException;
 
-import excel2db.ApplicationException;
-import excel2db.excel2db;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.poi.ss.usermodel.Sheet;
 

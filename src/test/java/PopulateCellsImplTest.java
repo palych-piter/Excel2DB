@@ -1,9 +1,8 @@
 import java.io.File;
-import java.io.IOException;
-import java.sql.ResultSet;
 
 import excel2db.excel2db;
 import org.apache.poi.ss.usermodel.Sheet;
+import org.json.JSONObject;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
@@ -23,7 +22,7 @@ import static org.junit.Assert.assertEquals;
 public class PopulateCellsImplTest {
 
     private Sheet sheet;
-    private String resultSetValue;
+    private String resultSetValue = "";
 
     @Test
     public void testPopulateCellsImpl() throws Exception {
@@ -40,26 +39,20 @@ public class PopulateCellsImplTest {
         app.dbConnection.establishDBConnection();
         app.createTable.createTable(sheet, "TEST");
         app.populateTable.populateTable(sheet, "TEST");
-        ResultSet rs = app.getFirstRow.getFirstRow("TEST");
-
-        //concatenate values in the result set row
-        while (rs.next()){
-            resultSetValue =
-                            rs.getString("Column1") + " " +
-                            rs.getString("Column2") + " " +
-                            rs.getString("Column3") + " " +
-                            rs.getString("Column4") + " " +
-                            rs.getString("Column5") + " " +
-                            rs.getString("Column6") + " " +
-                            rs.getString("Column7") + " " +
-                            rs.getString("Column8") + " " +
-                            rs.getString("Column9") + " " +
-                            rs.getString("Column10")
-            ;
-        }
+        JSONObject jsonResultSet = app.getFirstRow.getFirstRow("TEST");
 
         //compare with the expected result
-        assertEquals("Value 11 Value 12 Value 13 Value 14 Value 15 Value 16 Value 17 Value 18 Value 19 Value 110", resultSetValue);
+        assertEquals( "Value 11",  jsonResultSet.getString("Column1"));
+        assertEquals( "Value 12",  jsonResultSet.getString("Column2"));
+        assertEquals( "Value 13",  jsonResultSet.getString("Column3"));
+        assertEquals( "Value 14",  jsonResultSet.getString("Column4"));
+        assertEquals( "Value 15",  jsonResultSet.getString("Column5"));
+        assertEquals( "Value 16",  jsonResultSet.getString("Column6"));
+        assertEquals( "Value 17",  jsonResultSet.getString("Column7"));
+        assertEquals( "Value 18",  jsonResultSet.getString("Column8"));
+        assertEquals( "Value 19",  jsonResultSet.getString("Column9"));
+        assertEquals( "Value 110", jsonResultSet.getString("Column10"));
+
 
     }
 

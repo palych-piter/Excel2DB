@@ -6,6 +6,9 @@ import java.sql.SQLException;
 import java.util.HashSet;
 import java.util.concurrent.TimeUnit;
 
+import com.mongodb.MongoClient;
+import com.mongodb.client.MongoDatabase;
+import excel2db.service.CloseConnection;
 import excel2db.service.CreateTable;
 import excel2db.service.DBConnection;
 import excel2db.service.GenerateFileList;
@@ -31,12 +34,17 @@ public class excel2db
         this.populateTable = populateTable;
     }
 
-    //vars are used in interface implementations
+
+    //for JDBC connections
     public static Connection connection = null;
+    //for MongoDB connection
+    public static MongoClient mongoClient = null;
+    public static MongoDatabase mongoDB;
 
 
     // declaring variables to meet to the Spring framework convention
     public DBConnection dbConnection;
+    public CloseConnection closeConnection;
     public InitInputFiles initInputFiles;
     public GenerateFileList generateFileList;
     public CreateTable createTable;
@@ -53,6 +61,9 @@ public class excel2db
     public void setDbConnection(DBConnection dbConnection) {
         this.dbConnection = dbConnection;
     }
+    public void setCloseConnection(CloseConnection closeConnection) {
+        this.closeConnection = closeConnection;
+    }
     public void setInitInputFiles(InitInputFiles initInputFiles) {
         this.initInputFiles = initInputFiles;
     }
@@ -66,13 +77,14 @@ public class excel2db
         this.getFirstRow = getFirstRow;
     }
 
+    private static Boolean isEstablished;
 
     public static void main(String[] args) {
 
         try {
 
             //for profiling, to launch the VisualVM first,
-            // then start the application by pressing the Enter
+            //then start the application by pressing the Enter
             //System.in.read();
 
             ApplicationContext context = new ClassPathXmlApplicationContext("spring.xml");
@@ -88,13 +100,13 @@ public class excel2db
             }
 
             //this way we call methods for objects that is already initialized by the Spring
-            app.dbConnection.establishDBConnection();
+            isEstablished = app.dbConnection.establishDBConnection();
 
             // in case the connection established
             // iterate through file name values in properties file, for each file start a new thread
-            if (connection != null) {
-                for (String fileNameValue : fileList) {
+            if (isEstablished) {
 
+                for (String fileNameValue : fileList) {
                     File fileName = new File(fileNameValue);
                     //check if the file really exists
                     if (fileName.exists() == false) {
@@ -114,7 +126,9 @@ public class excel2db
                 }
                 logger.info("All threads are inactive");
 
-                app.closeConnections();
+                app.closeTasks();
+                app.closeConnection.closeDBConnection();
+
             }
         } catch (Exception e) {
             logger.error("An exception occurred while running application", e);
@@ -123,14 +137,10 @@ public class excel2db
 
     }
 
-    public void closeConnections() throws ApplicationException, SQLException {
-
-        connection.close();
-        logger.info("Connections are closed");
+    public void closeTasks() throws ApplicationException, SQLException {
 
         taskExecutor.shutdown();
         logger.info("Task executor is stopped");
-
         logger.info("The process is completed. Number of processed records: " + Excel2dbTask.numberOfProcessedRows.toString());
 
     }

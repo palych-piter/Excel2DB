@@ -31,7 +31,7 @@ public class DBConnectionPostgresImpl implements DBConnection {
     public static final Logger logger = LoggerFactory.getLogger(DBConnectionPostgresImpl.class);
 
 
-    public void establishDBConnection() throws SQLException {
+    public Boolean establishDBConnection() throws SQLException {
 
         //TODO : try to use the try-catch-resource construction, connection object should be closed as soon as the program stops working with this object
         try {
@@ -40,8 +40,10 @@ public class DBConnectionPostgresImpl implements DBConnection {
             logger.info("Postgres connection is established");
         } catch (SQLException e) {
             logger.error("Postgres Connection Failed! Check output console.");
+            return false;
         }
 
+        return true;
     }
 
 }

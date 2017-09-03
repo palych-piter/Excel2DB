@@ -1,10 +1,12 @@
 package excel2db.service;
 
-import java.sql.ResultSet;
 import java.sql.SQLException;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 public interface GetFirstRow {
 
-    public ResultSet getFirstRow (String tableName) throws SQLException;
+    public JSONObject getFirstRow (String tableName) throws SQLException, JSONException;
 
 }

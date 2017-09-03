@@ -33,18 +33,20 @@ public class DBConnectionOracleImpl implements DBConnection {
 
     public static final Logger logger = LoggerFactory.getLogger(DBConnectionOracleImpl.class);
 
-    public void establishDBConnection() {
+    public Boolean establishDBConnection() {
         {
 
             try {
                 excel2db.connection = DriverManager.getConnection(
                         "jdbc:oracle:thin:@//" + dbServer + ":" + dbPort + "/" + dbSid, dbUser, dbPassword);
                 logger.info("Oracle connection is established");
+
             } catch (SQLException e) {
                 logger.error("Oracle Connection Failed! Check output console");
+                return false;
             }
         }
-
+        return true;
     }
 
 }

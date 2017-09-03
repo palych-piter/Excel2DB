@@ -42,7 +42,7 @@ public class InitInputFilesImpl implements InitInputFiles {
 
     public static final Logger logger = LoggerFactory.getLogger(InitInputFilesImpl.class);
 
-    //fabric method for
+
     //fabric method pattern, we don't know which object should be created
     //in advance and define the object type based on an extension
     @Override
@@ -124,7 +124,7 @@ public class InitInputFilesImpl implements InitInputFiles {
             if(cell.getCellType() == Cell.CELL_TYPE_STRING) {
                 String name = cell.getStringCellValue();
                 if(! name.equals("")) {
-                    name = name.toUpperCase();
+                    //name = name.toUpperCase();
                     if(! header.containsKey(name)) {
                         header.put(name, cell.getColumnIndex());
                     } else {

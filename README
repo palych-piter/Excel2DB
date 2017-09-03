@@ -1,4 +1,3 @@
-
 How to clone and build the project from the GitHub 
 
 1. Create a folder you want to handle the project and clone the 
@@ -10,7 +9,7 @@ The Excel2Db subfolder should be created.
 Gradle pre-installed.
 
 3. All is set. The "build/libs/" subfolder should have the newest jar file
-generated. By default the subfolder contains the property file pointing to
+generated in the excel2db-<version>.jar format. By default the subfolder contains the property file pointing to
 the Derby database as the testing implementation and test.xlsx 
 as the test Excel file.
 

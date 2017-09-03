@@ -15,8 +15,8 @@
 
 
     <bean id="excel2db" class="excel2db.excel2db" scope="singleton">
-
         <property name="dbConnection" ref="dbConnection"></property>
+        <property name="closeConnection" ref="closeConnection"></property>
         <property name="initInputFiles" ref="initInputFiles"></property>
         <property name="generateFileList" ref="generateFileList"></property>
         <property name="initConstants" ref="initConstants"></property>
@@ -28,31 +28,20 @@
         <constructor-arg>
             <ref bean="populateTable"/>
         </constructor-arg>
-
-
     </bean>
 
-    <!-- This way it is possible to get values from a properties file nd use the values -->
+    <!-- This way it is possible to get values from a properties file and use the values -->
     <!-- as paramaters in the spring configuration -->
-
     <bean id="dbConnection" class="${dbConnectionImplenentation}"></bean>
-    <!--<bean id="dbConnection" class="excel2db.service.impl.DBConnectionPostgresImpl"></bean>-->
-
+    <bean id="closeConnection" class="${closeConnectionImplenentation}"></bean>
     <bean id="createTable" class="${createTableImplenentation}"></bean>
-    <!--<bean id="createTable" class="excel2db.service.impl.CreateTablePostgresImpl"></bean>-->
+    <bean id="populateTable" class="${populateTableImplenentation}"></bean>
+    <bean id="getFirstRow" class="${getFirstRowImplenentation}"></bean>
 
-    <!--<bean id="getFirstRow" class="${getFirstRowImplementation}"></bean>-->
-    <bean id="getFirstRow" class="excel2db.service.impl.GetFirstRowDerbyImpl"></bean>
-
-
-    <bean id="populateTable" class="excel2db.service.impl.PopulateTablePostgresImpl"></bean>
-
+    <!--<bean id="getFirstRow" class="excel2db.service.impl.GetFirstRowDerbyImpl"></bean>-->
     <bean id="initInputFiles" class="excel2db.service.impl.InitInputFilesImpl"></bean>
-
     <bean id="generateFileList" class="excel2db.service.impl.GenerateFileListImpl"></bean>
-
     <bean id="initConstants" class="excel2db.service.InitConstants"></bean>
-
 
     <bean id="taskExecutor"
           class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor">

@@ -1,11 +1,5 @@
 package excel2db.service.impl;
 
-/**
- * Created by Andrey on 6/21/2017.
- */
-
-import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Properties;
 
@@ -14,14 +8,13 @@ import excel2db.service.DBConnection;
 import org.apache.derby.jdbc.EmbeddedDriver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Value;
 
 
 public class DBConnectionDerbyImpl implements DBConnection {
 
     public static final Logger logger = LoggerFactory.getLogger(DBConnectionDerbyImpl.class);
 
-    public void establishDBConnection() {
+    public Boolean establishDBConnection() {
         {
             try {
                 //initialize an In-Memory Derby database
@@ -31,8 +24,9 @@ public class DBConnectionDerbyImpl implements DBConnection {
 
             } catch (SQLException e) {
                 logger.error("Derby Connection Failed! Check output console");
-
+                return false;
             }
         }
+        return true;
     }
 }

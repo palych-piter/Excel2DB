@@ -1,10 +1,9 @@
 group 'excel2db'
-version '2.0'
-
 
 apply plugin: 'java'
 apply plugin: 'com.github.johnrengelman.shadow'
 
+version '3.0'
 
 buildscript {
     repositories {
@@ -30,6 +29,8 @@ shadowJar {
     // exclude properties file from jar
     exclude('excel2db.properties')
     mergeServiceFiles()
+    //here we set a name format of jar file
+    archiveName = "excel2db-${version}.${extension}"
 }
 
 
@@ -55,8 +56,10 @@ dependencies {
    compile 'org.apache.directory.studio:org.apache.commons.io:2.4'
 
    compile 'org.postgresql:postgresql:42.0.0.jre7'
+   compile 'org.mongodb:mongodb-driver:3.5.0'
 
-   //jdbc drivers -- oracle, the Oracle driver is officially NOT shared in the Maven Repo
+
+    //jdbc drivers -- oracle, the Oracle driver is officially NOT shared in the Maven Repo
    //because of license aspects
    compile files('libs/ojdbc6.jar')
 
