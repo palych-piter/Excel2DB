@@ -2,9 +2,7 @@ package excel2db.service.impl;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Iterator;
-import java.util.LinkedHashMap;
-import java.util.Map;
+import java.util.*;
 
 import excel2db.ApplicationException;
 import excel2db.service.InitInputFiles;
@@ -12,11 +10,8 @@ import org.apache.commons.io.FilenameUtils;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.openxml4j.opc.OPCPackage;
-import org.apache.poi.poifs.filesystem.NPOIFSFileSystem;
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.poifs.filesystem.POIFSFileSystem;
+import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,7 +24,7 @@ public class InitInputFilesImpl implements InitInputFiles {
     private File inputSheetFile;
     private String fileExtension;
 
-    public static Sheet sheet;
+    private Sheet[] sheets;
 
 
     public File getInputSheetFile() {
@@ -46,7 +41,7 @@ public class InitInputFilesImpl implements InitInputFiles {
     //fabric method pattern, we don't know which object should be created
     //in advance and define the object type based on an extension
     @Override
-    public Sheet initInputFiles(File inputFile)
+    public Sheet[] initInputFiles(File inputFile)
             throws ApplicationException, IOException {
 
         setInputSheetFile(inputFile);
@@ -60,13 +55,16 @@ public class InitInputFilesImpl implements InitInputFiles {
         } else {
             workbook = createWorkbook(openNPOIFSFileSystemPackage(inputSheetFile));
         }
-
-        sheet = workbook.getSheetAt(0);
-        if (sheet == null) {
-            throw new ApplicationException("Workbook does not contain a sheet with index 0");
+        List<Sheet> sheetsList = new ArrayList<>();
+        for(int i=0; i<workbook.getNumberOfSheets(); i++) {
+            sheetsList.add(workbook.getSheetAt(i));
+        }
+        sheets = sheetsList.toArray(new Sheet[0]);
+        if (sheets.length <= 0) {
+            throw new ApplicationException("Workbook does not contain sheets");
         }
 
-        return sheet;
+        return sheets;
 
     }
 
@@ -81,9 +79,9 @@ public class InitInputFilesImpl implements InitInputFiles {
     }
 
 
-    private static NPOIFSFileSystem openNPOIFSFileSystemPackage(File file) throws ApplicationException {
+    private static POIFSFileSystem openNPOIFSFileSystemPackage(File file) throws ApplicationException {
         try {
-            return new NPOIFSFileSystem(file);
+            return new POIFSFileSystem(file);
         } catch (IOException e) {
             throw new ApplicationException("Unable to open NPOIFSFileSystem package from " + file.getAbsolutePath(), e);
         }
@@ -99,7 +97,7 @@ public class InitInputFilesImpl implements InitInputFiles {
     }
 
 
-    private static Workbook createWorkbook(NPOIFSFileSystem pkg) throws ApplicationException {
+    private static Workbook createWorkbook(POIFSFileSystem pkg) throws ApplicationException {
         try {
             return new HSSFWorkbook(pkg);
         } catch (IOException e) {
@@ -121,7 +119,7 @@ public class InitInputFilesImpl implements InitInputFiles {
         while(it.hasNext()) {
             Cell cell = it.next();
 
-            if(cell.getCellType() == Cell.CELL_TYPE_STRING) {
+            if(cell.getCellType() == CellType.STRING) {
                 String name = cell.getStringCellValue();
                 if(! name.equals("")) {
                     //name = name.toUpperCase();

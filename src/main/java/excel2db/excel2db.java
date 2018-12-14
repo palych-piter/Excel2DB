@@ -93,11 +93,13 @@ public class excel2db
             taskExecutor = (ThreadPoolTaskExecutor) context.getBean("taskExecutor");
 
             //check if the file list is not empty
-            HashSet<String> fileList = app.generateFileList.generateFileList();
+            HashSet<String> fileList = app.generateFileList.getFileList();
             if (fileList == null){
                 throw new Exception("File list is empty in property file");
 
             }
+
+            HashSet<String> sheetsList = app.generateFileList.getSheetList();
 
             //this way we call methods for objects that is already initialized by the Spring
             isEstablished = app.dbConnection.establishDBConnection();
@@ -112,7 +114,7 @@ public class excel2db
                     if (fileName.exists() == false) {
                         logger.error("The file " + fileNameValue + " doesn't exist");
                     } else {
-                        taskExecutor.execute(new Excel2dbTask(app, fileName));
+                        taskExecutor.execute(new Excel2dbTask(app, fileName, sheetsList));
                     }
                 }
 

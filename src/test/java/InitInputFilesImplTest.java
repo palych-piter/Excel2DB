@@ -1,4 +1,4 @@
-// verify if the application reads the Excel sheet by checking a sheet name
+// verify if the application reads the Excel sheets by checking a sheets name
 
 import java.io.File;
 
@@ -33,8 +33,8 @@ public class InitInputFilesImplTest {
         //executing the test
         File fileName = new File(app.initConstants.workingDir + "/test.xlsx");
 
-        //here we should initialize the sheet object
-        assertEquals("TestSheet", app.initInputFiles.initInputFiles(fileName).getSheetName());
+        //here we should initialize the sheets object
+        assertEquals("TestSheet", app.initInputFiles.initInputFiles(fileName)[0].getSheetName());
 
     }
 

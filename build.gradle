@@ -8,9 +8,12 @@ version '3.0'
 buildscript {
     repositories {
         jcenter()
+        maven {
+              url "https://plugins.gradle.org/m2/"
+        }
     }
     dependencies {
-        classpath 'com.github.jengelman.gradle.plugins:shadow:1.2.4'
+        classpath 'com.github.jengelman.gradle.plugins:shadow:4.0.3'
     }
 }
 
@@ -51,11 +54,11 @@ dependencies {
    }
 
    compile 'org.springframework.boot:spring-boot-starter-test:1.5.3.RELEASE'
-   compile 'org.apache.poi:poi:3.15'
-   compile 'org.apache.poi:poi-ooxml:3.15'
+   compile 'org.apache.poi:poi:4.0.1'
+   compile 'org.apache.poi:poi-ooxml:4.0.1'
    compile 'org.apache.directory.studio:org.apache.commons.io:2.4'
 
-   compile 'org.postgresql:postgresql:42.0.0.jre7'
+   compile 'org.postgresql:postgresql:42.2.5'
    compile 'org.mongodb:mongodb-driver:3.5.0'
 
 
