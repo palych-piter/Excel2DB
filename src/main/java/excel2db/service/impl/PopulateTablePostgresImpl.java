@@ -22,7 +22,7 @@ public class PopulateTablePostgresImpl implements PopulateTable {
     public Integer populateTable(Sheet sheet, String tableName)
             throws SQLException {
 
-        Iterator<Row> rowIterator = InitInputFilesImpl.sheet.rowIterator();
+        Iterator<Row> rowIterator = sheet.rowIterator();
 
         //skip a header
         if (rowIterator.hasNext()) {

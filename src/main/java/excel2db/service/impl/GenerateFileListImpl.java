@@ -12,8 +12,11 @@ public class GenerateFileListImpl implements GenerateFileList {
     @Value("${input.files}")
     String inputFilesList;
 
+    @Value("${input.sheets}")
+    String inputSheetsList;
+
     @Override
-    public HashSet<String> generateFileList() {
+    public HashSet<String> getFileList() {
 
         HashSet<String> fileList = null;
         if (!inputFilesList.isEmpty()) {
@@ -23,5 +26,16 @@ public class GenerateFileListImpl implements GenerateFileList {
         }
         return fileList;
 
+    }
+
+    @Override
+    public HashSet<String> getSheetList() {
+        HashSet<String> sheetsList = null;
+        if (!inputSheetsList.isEmpty()) {
+            String[] sheetNameArray = inputSheetsList.split(",");
+            // hash set to eliminate duplicates
+            sheetsList = new HashSet<>(Arrays.asList(sheetNameArray));
+        }
+        return sheetsList;
     }
 }

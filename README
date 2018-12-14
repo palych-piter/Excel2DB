@@ -1,3 +1,10 @@
+This application lets you import an Excel workbook with multiple worksheets into 
+Postgres, Oracle, MongoDB, Derby databases.
+
+Caveats:
+  - Name of the worksheet is used as tablename. This means that the worksheet name must
+be a valid table name 
+
 How to clone and build the project from the GitHub 
 
 1. Create a folder you want to handle the project and clone the 
@@ -13,4 +20,9 @@ generated in the excel2db-<version>.jar format. By default the subfolder contain
 the Derby database as the testing implementation and test.xlsx 
 as the test Excel file.
 
- 
+Configure 
+  - the database you want to use
+  - path to the Excel file 
+  - names of the worksheets you want to be extracted (leave blank if all need to be processed)
+  - database connection properties
+in excel2db.properties

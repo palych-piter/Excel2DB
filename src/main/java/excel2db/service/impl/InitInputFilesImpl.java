@@ -2,9 +2,7 @@ package excel2db.service.impl;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Iterator;
-import java.util.LinkedHashMap;
-import java.util.Map;
+import java.util.*;
 
 import excel2db.ApplicationException;
 import excel2db.service.InitInputFiles;
@@ -29,7 +27,7 @@ public class InitInputFilesImpl implements InitInputFiles {
     private File inputSheetFile;
     private String fileExtension;
 
-    public static Sheet sheet;
+    private Sheet[] sheets;
 
 
     public File getInputSheetFile() {
@@ -46,7 +44,7 @@ public class InitInputFilesImpl implements InitInputFiles {
     //fabric method pattern, we don't know which object should be created
     //in advance and define the object type based on an extension
     @Override
-    public Sheet initInputFiles(File inputFile)
+    public Sheet[] initInputFiles(File inputFile)
             throws ApplicationException, IOException {
 
         setInputSheetFile(inputFile);
@@ -60,13 +58,16 @@ public class InitInputFilesImpl implements InitInputFiles {
         } else {
             workbook = createWorkbook(openNPOIFSFileSystemPackage(inputSheetFile));
         }
-
-        sheet = workbook.getSheetAt(0);
-        if (sheet == null) {
-            throw new ApplicationException("Workbook does not contain a sheet with index 0");
+        List<Sheet> sheetsList = new ArrayList<>();
+        for(int i=0; i<workbook.getNumberOfSheets(); i++) {
+            sheetsList.add(workbook.getSheetAt(i));
+        }
+        sheets = sheetsList.toArray(new Sheet[0]);
+        if (sheets.length <= 0) {
+            throw new ApplicationException("Workbook does not contain sheets");
         }
 
-        return sheet;
+        return sheets;
 
     }
 

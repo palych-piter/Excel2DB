@@ -21,7 +21,7 @@ import static org.junit.Assert.assertEquals;
 
 public class PopulateCellsImplTest {
 
-    private Sheet sheet;
+    private Sheet[] sheets;
     private String resultSetValue = "";
 
     @Test
@@ -33,12 +33,12 @@ public class PopulateCellsImplTest {
         //executing the test
         File fileName = new File(app.initConstants.workingDir + "/test.xlsx");
 
-        sheet = app.initInputFiles.initInputFiles(fileName);
+        sheets = app.initInputFiles.initInputFiles(fileName);
 
         //create and populate a table
         app.dbConnection.establishDBConnection();
-        app.createTable.createTable(sheet, "TEST");
-        app.populateTable.populateTable(sheet, "TEST");
+        app.createTable.createTable(sheets[0], "TEST");
+        app.populateTable.populateTable(sheets[0], "TEST");
         JSONObject jsonResultSet = app.getFirstRow.getFirstRow("TEST");
 
         //compare with the expected result

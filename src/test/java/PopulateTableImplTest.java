@@ -19,7 +19,7 @@ import static org.junit.Assert.assertEquals;
 @Category(JUnitPopulateTableCategory.class)
 public class PopulateTableImplTest {
 
-    private Sheet sheet;
+    private Sheet[] sheets;
 
     @Test
     public void testPopulateTable() throws Exception {
@@ -31,11 +31,11 @@ public class PopulateTableImplTest {
         //executing the test
         File fileName = new File(app.initConstants.workingDir + "/test.xlsx");
 
-        sheet = app.initInputFiles.initInputFiles(fileName);
+        sheets = app.initInputFiles.initInputFiles(fileName);
         app.dbConnection.establishDBConnection();
-        app.createTable.createTable(sheet, "testTable");
+        app.createTable.createTable(sheets[0], "testTable");
 
-        Integer numOfProcessedRows = app.populateTable.populateTable(sheet, "testTable");
+        Integer numOfProcessedRows = app.populateTable.populateTable(sheets[0], "testTable");
         assertEquals(Integer.valueOf(2), numOfProcessedRows);
 
     }

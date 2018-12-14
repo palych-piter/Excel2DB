@@ -23,7 +23,7 @@ public class PopulateTableMongoDBImpl implements PopulateTable {
 
     public Integer populateTable(Sheet sheet, String tableName){
 
-        Iterator<Row> rowIterator = InitInputFilesImpl.sheet.rowIterator();
+        Iterator<Row> rowIterator = sheet.rowIterator();
 
         Row row = (Row) rowIterator.next();
 
