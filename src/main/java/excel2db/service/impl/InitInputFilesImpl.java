@@ -10,11 +10,8 @@ import org.apache.commons.io.FilenameUtils;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.openxml4j.opc.OPCPackage;
-import org.apache.poi.poifs.filesystem.NPOIFSFileSystem;
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.poifs.filesystem.POIFSFileSystem;
+import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -82,9 +79,9 @@ public class InitInputFilesImpl implements InitInputFiles {
     }
 
 
-    private static NPOIFSFileSystem openNPOIFSFileSystemPackage(File file) throws ApplicationException {
+    private static POIFSFileSystem openNPOIFSFileSystemPackage(File file) throws ApplicationException {
         try {
-            return new NPOIFSFileSystem(file);
+            return new POIFSFileSystem(file);
         } catch (IOException e) {
             throw new ApplicationException("Unable to open NPOIFSFileSystem package from " + file.getAbsolutePath(), e);
         }
@@ -100,7 +97,7 @@ public class InitInputFilesImpl implements InitInputFiles {
     }
 
 
-    private static Workbook createWorkbook(NPOIFSFileSystem pkg) throws ApplicationException {
+    private static Workbook createWorkbook(POIFSFileSystem pkg) throws ApplicationException {
         try {
             return new HSSFWorkbook(pkg);
         } catch (IOException e) {
@@ -122,7 +119,7 @@ public class InitInputFilesImpl implements InitInputFiles {
         while(it.hasNext()) {
             Cell cell = it.next();
 
-            if(cell.getCellType() == Cell.CELL_TYPE_STRING) {
+            if(cell.getCellType() == CellType.STRING) {
                 String name = cell.getStringCellValue();
                 if(! name.equals("")) {
                     //name = name.toUpperCase();
